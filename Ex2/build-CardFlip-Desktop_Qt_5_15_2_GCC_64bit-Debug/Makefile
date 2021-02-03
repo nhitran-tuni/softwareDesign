@@ -52,9 +52,13 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../CardFlip/main.cpp qrc_qml.cpp
-OBJECTS       = main.o \
-		qrc_qml.o
+SOURCES       = ../CardFlip/backend.cpp \
+		../CardFlip/main.cpp qrc_qml.cpp \
+		moc_backend.cpp
+OBJECTS       = backend.o \
+		main.o \
+		qrc_qml.o \
+		moc_backend.o
 DIST          = ../../../../Qt/5.15.2/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/common/unix.conf \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/common/linux.conf \
@@ -231,7 +235,8 @@ DIST          = ../../../../Qt/5.15.2/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/features/exceptions.prf \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/features/yacc.prf \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/features/lex.prf \
-		../CardFlip/CardFlip.pro  ../CardFlip/main.cpp
+		../CardFlip/CardFlip.pro ../CardFlip/backend.h ../CardFlip/backend.cpp \
+		../CardFlip/main.cpp
 QMAKE_TARGET  = CardFlip
 DESTDIR       = 
 TARGET        = CardFlip
@@ -616,7 +621,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../CardFlip/qml.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../../Qt/5.15.2/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../CardFlip/main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../CardFlip/backend.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../CardFlip/backend.cpp ../CardFlip/main.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -658,8 +664,70 @@ compiler_moc_predefs_clean:
 moc_predefs.h: ../../../../Qt/5.15.2/gcc_64/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -Wall -Wextra -dM -E -o moc_predefs.h ../../../../Qt/5.15.2/gcc_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: moc_backend.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc_backend.cpp
+moc_backend.cpp: ../CardFlip/backend.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/QObject \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qobject.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qobjectdefs.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qnamespace.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qglobal.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qconfig.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qtcore-config.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qsystemdetection.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qprocessordetection.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qtypeinfo.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qsysinfo.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qlogging.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qflags.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qatomic.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qbasicatomic.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qgenericatomic.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qglobalstatic.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qmutex.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qnumeric.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qversiontagging.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qstring.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qchar.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qbytearray.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qrefcount.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qarraydata.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qstringliteral.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qstringalgorithms.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qstringview.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qstringbuilder.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qlist.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qalgorithms.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qiterator.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qhashfunctions.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qpair.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qvector.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qcontainertools_impl.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qpoint.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qbytearraylist.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qstringlist.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qregexp.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qstringmatcher.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qcoreevent.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qscopedpointer.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qmetatype.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qobject_impl.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/QString \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/QRandomGenerator \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qrandom.h \
+		moc_predefs.h \
+		../../../../Qt/5.15.2/gcc_64/bin/moc
+	/home/nhi/Qt/5.15.2/gcc_64/bin/moc $(DEFINES) --include '/home/nhi/software design/mpthtr/Ex2/build-CardFlip-Desktop_Qt_5_15_2_GCC_64bit-Debug/moc_predefs.h' -I/home/nhi/Qt/5.15.2/gcc_64/mkspecs/linux-g++ -I'/home/nhi/software design/mpthtr/Ex2/CardFlip' -I/home/nhi/Qt/5.15.2/gcc_64/include -I/home/nhi/Qt/5.15.2/gcc_64/include/QtQuick -I/home/nhi/Qt/5.15.2/gcc_64/include/QtGui -I/home/nhi/Qt/5.15.2/gcc_64/include/QtQmlModels -I/home/nhi/Qt/5.15.2/gcc_64/include/QtQml -I/home/nhi/Qt/5.15.2/gcc_64/include/QtNetwork -I/home/nhi/Qt/5.15.2/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../CardFlip/backend.h -o moc_backend.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -670,9 +738,68 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
+
+backend.o: ../CardFlip/backend.cpp ../CardFlip/backend.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/QObject \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qobject.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qobjectdefs.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qnamespace.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qglobal.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qconfig.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qtcore-config.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qsystemdetection.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qprocessordetection.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qtypeinfo.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qsysinfo.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qlogging.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qflags.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qatomic.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qbasicatomic.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qgenericatomic.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qglobalstatic.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qmutex.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qnumeric.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qversiontagging.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qstring.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qchar.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qbytearray.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qrefcount.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qarraydata.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qstringliteral.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qstringalgorithms.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qstringview.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qstringbuilder.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qlist.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qalgorithms.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qiterator.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qhashfunctions.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qpair.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qvector.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qcontainertools_impl.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qpoint.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qbytearraylist.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qstringlist.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qregexp.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qstringmatcher.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qcoreevent.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qscopedpointer.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qmetatype.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qobject_impl.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/QString \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/QRandomGenerator \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qrandom.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o backend.o ../CardFlip/backend.cpp
 
 main.o: ../CardFlip/main.cpp ../../../../Qt/5.15.2/gcc_64/include/QtGui/QGuiApplication \
 		../../../../Qt/5.15.2/gcc_64/include/QtGui/qguiapplication.h \
@@ -768,11 +895,19 @@ main.o: ../CardFlip/main.cpp ../../../../Qt/5.15.2/gcc_64/include/QtGui/QGuiAppl
 		../../../../Qt/5.15.2/gcc_64/include/QtQml/qqmlpropertyvaluesource.h \
 		../../../../Qt/5.15.2/gcc_64/include/QtCore/qpointer.h \
 		../../../../Qt/5.15.2/gcc_64/include/QtCore/qmetaobject.h \
-		../../../../Qt/5.15.2/gcc_64/include/QtQml/qqmlerror.h
+		../../../../Qt/5.15.2/gcc_64/include/QtQml/qqmlerror.h \
+		../CardFlip/backend.h \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/QObject \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/QString \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/QRandomGenerator \
+		../../../../Qt/5.15.2/gcc_64/include/QtCore/qrandom.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../CardFlip/main.cpp
 
 qrc_qml.o: qrc_qml.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qml.o qrc_qml.cpp
+
+moc_backend.o: moc_backend.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_backend.o moc_backend.cpp
 
 ####### Install
 

@@ -42,6 +42,10 @@ Rectangle {
                 target: image
                 imageSource: "cardBack.jpg"
             }
+            PropertyChanges {
+                target: rotation
+                angle: 180
+            }
         },
         State {
             name: "FRONT"
@@ -59,6 +63,10 @@ Rectangle {
                 target: image
                 imageSource: "cardFront.jpg"
             }
+            PropertyChanges {
+                target: rotation
+                angle: 0
+            }
         }
     ]
 
@@ -73,4 +81,40 @@ Rectangle {
             }
         }
     }
+
+    transform: Rotation {
+        id: rotation
+        origin.x: card.width / 2
+        origin.y: card.height / 2
+        axis.x: 0
+        axis.y: 1
+        axis.z: 0
+    }
+
+    transitions: [
+        Transition {
+            from: "*"
+            to: "*"
+            SequentialAnimation{
+                NumberAnimation {
+                    target: rotation
+                    property: "angle"
+                    duration: 1000
+                    to: 90
+                }
+//                PropertyAnimation {
+//                    target: card
+//                    property: "color"
+//                    duration: 0
+//                }
+                NumberAnimation {
+                    target: rotation
+                    property: "angle"
+                    duration: 1000
+                    to: 90
+                }
+            }
+        }
+    ]
+
 }

@@ -2,9 +2,12 @@ import QtQuick 2.0
 
 Flipable {
     id: flipable
-    anchors.fill: parent
+    width: 300
+    height: 500
+    anchors.centerIn: parent
 
     property bool flipped: false
+    property alias cardValueText: cardValue.text
 
     back: Rectangle {
         width: 300
@@ -14,16 +17,16 @@ Flipable {
         color: "white"
 
         Text {
-            id: cardValueFront
+            id: cardValue
             anchors.centerIn: parent
-            text: qsTr("10")
+            text: cardValueText
             color: "black"
             font.pointSize: 80
         }
 
         Image {
             id: imageFront
-            anchors.top: cardValueFront.bottom
+            anchors.top: cardValue.bottom
             anchors.horizontalCenter: parent.horizontalCenter
             source: "cardFront.jpg"
             fillMode: Image.PreserveAspectFit
@@ -40,7 +43,7 @@ Flipable {
         color: "black"
 
         Text {
-            id: cardValueBack
+            id: cardValueFront
             anchors.centerIn: parent
             text: qsTr("Click me!")
             color: "#dea5a4"
@@ -49,7 +52,7 @@ Flipable {
 
         Image {
             id: imageBack
-            anchors.top: cardValueBack.bottom
+            anchors.top: cardValueFront.bottom
             anchors.horizontalCenter: parent.horizontalCenter
             source: "cardBack.jpg"
             fillMode: Image.PreserveAspectFit
@@ -74,10 +77,14 @@ Flipable {
 
     transitions: Transition {
         NumberAnimation { target: rotation; property: "angle"; duration: 1000 }
-    }
+    }   
 
     MouseArea {
+        id: flipCard
         anchors.fill: parent
-        onClicked: flipable.flipped = !flipable.flipped
+        onClicked:
+            if (flipped) {
+                flipable.flipped = !flipable.flipped
+            }
     }
 }
